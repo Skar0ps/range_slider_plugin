@@ -9,7 +9,7 @@ extends Control
 @export_custom(PROPERTY_HINT_RANGE, "0.0,10.0,0.5") var basic_range: Vector2
 
 ## Range slider with different min, max, and step
-@export_custom(PROPERTY_HINT_RANGE, "-100.0,100.0,1.0,suffix:px") var pixel_range: Vector2
+@export_custom(PROPERTY_HINT_RANGE, "-100.0,100.0,1.0,suffix:px") var negative_range: Vector2
 
 ## Range slider with or_greater and or_less
 @export_custom(PROPERTY_HINT_RANGE, "0,10,1,or_greater,or_less") var open_range: Vector2
