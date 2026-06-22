@@ -63,7 +63,7 @@ enum DragMode {
 ## If [code]true[/code], mouse wheel scroll will move the value range.
 @export var scrollable: bool = true
 
-## If [code]true[/code], the handles will always be visible. If [code]false[/code], the handles will only be visible when the mouse is interacting with the control.
+## If [code]true[/code], the handles will always be visible, otherwise the handles will only be visible when interacting with the control.
 @export var always_show_handles: bool = false :
 	set(new_value):
 		if always_show_handles != new_value:
@@ -123,7 +123,7 @@ enum DragMode {
 		return handle_pressed_color
 
 ## The color of the handles when they are disabled.
-@export var handle_disabled_color: Color = Color.GRAY :
+@export var handle_disabled_color: Color = Color.DARK_GRAY :
 	set(new_value):
 		if handle_disabled_color != new_value:
 			handle_disabled_color = new_value
@@ -680,7 +680,7 @@ func _move_range_by_step(direction: float) -> void:
 #endregion
 
 
-## Updates the hover state based on the mouse position.
+## Updates the hover state based on the mouse position in relation to the RangeSlider.
 func _update_hover_state(position: Vector2) -> void:
 	var new_hover_state: HoverState = HoverState.NONE
 	var start_handle_rect: Rect2 = _get_start_handle_rect()
@@ -700,6 +700,7 @@ func _update_hover_state(position: Vector2) -> void:
 		_update_mouse_shape()
 
 ## Changes the cursor shape depending on where it is on the RangeSlider.
+## Virtual function because vertical and horizontal range sliders do not share the same mouse shapes.
 func _update_mouse_shape():
 	pass # Virtual
 

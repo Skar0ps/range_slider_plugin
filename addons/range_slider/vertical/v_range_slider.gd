@@ -6,8 +6,8 @@
 class_name VRangeSlider
 extends RangeSlider
 
-const RANGE_SLIDER_DOWN = preload("uid://diu5pjc685lmf")
-const RANGE_SLIDER_UP = preload("uid://ixe81eiob7mm")
+const RANGE_SLIDER_DOWN : Texture2D = preload("uid://diu5pjc685lmf")
+const RANGE_SLIDER_UP : Texture2D = preload("uid://ixe81eiob7mm")
 
 func _get_minimum_size() -> Vector2:
 	var start_handle_height: float = _get_start_handle_extent()

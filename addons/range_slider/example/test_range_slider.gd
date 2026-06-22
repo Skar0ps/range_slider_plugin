@@ -3,6 +3,8 @@ extends Control
 
 @export_range(0.0,100.0,0.1) var float_range : float
 
+@export var non_range : Vector2
+
 # Basic range slider
 @export_custom(PROPERTY_HINT_RANGE, "0.0,10.0,0.5") var basic_range: Vector2
 
