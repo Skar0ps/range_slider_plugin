@@ -1,0 +1,26 @@
+name: Package plugin on release
+
+# runs when a version tag is pushed to get only the addons folder in a zip
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Create plugin archive
+        run: zip -r range_slider.zip addons
+
+      - name: Create release and attach archive
+        uses: softprops/action-gh-release@v3
+        with:
+          files: range_slider.zip
+          generate_release_notes: true
