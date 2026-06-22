@@ -12,6 +12,11 @@ extends Range
 ## Emitted when the range (the distance between the two handles) is changed.
 signal range_changed(new_range: Vector2)
 
+## Minimum on screen length (px) of the selected-range bar, so a zero width range stays grabbable.
+const MIN_BAR_SIZE: float = 4.0
+## Minimum usable slider length (px) added on top of the two handle extents in [method _get_minimum_size].
+const MIN_SLIDER_LENGTH: float = 10.0
+
 ## Represents the hover state of the mouse over the control.
 enum HoverState { 
 	NONE, ## The mouse is not hovering over any part of the control.
@@ -206,12 +211,13 @@ enum DragMode {
 		return handle_end_disabled_icon
 
 @export_subgroup("StyleBoxes")
+
 ## The background of the slider. If not set, creates a StyleBoxFlat with only a border.
 @export var slider_style: StyleBox:
 	set(new_value):
 		if slider_style != new_value:
+			_swap_style_changed_connection(slider_style, new_value)
 			slider_style = new_value
-			slider_style.changed.connect(queue_redraw)
 			queue_redraw()
 	get:
 		if not slider_style:
@@ -228,8 +234,8 @@ enum DragMode {
 @export var grabber_area_style: StyleBox:
 	set(new_value):
 		if grabber_area_style != new_value:
+			_swap_style_changed_connection(grabber_area_style, new_value)
 			grabber_area_style = new_value
-			grabber_area_style.changed.connect(queue_redraw)
 			queue_redraw()
 	get:
 		if not grabber_area_style:
@@ -244,8 +250,8 @@ enum DragMode {
 @export var grabber_area_hover_style: StyleBox:
 	set(new_value):
 		if grabber_area_hover_style != new_value:
+			_swap_style_changed_connection(grabber_area_hover_style, new_value)
 			grabber_area_hover_style = new_value
-			grabber_area_hover_style.changed.connect(queue_redraw)
 			queue_redraw()
 	get:
 		if not grabber_area_hover_style:
@@ -260,8 +266,8 @@ enum DragMode {
 @export var grabber_area_pressed_style: StyleBox:
 	set(new_value):
 		if grabber_area_pressed_style != new_value:
+			_swap_style_changed_connection(grabber_area_pressed_style, new_value)
 			grabber_area_pressed_style = new_value
-			grabber_area_pressed_style.changed.connect(queue_redraw)
 			queue_redraw()
 	get:
 		if not grabber_area_pressed_style:
@@ -278,8 +284,8 @@ enum DragMode {
 @export var grabber_area_disabled_style: StyleBox:
 	set(new_value):
 		if grabber_area_disabled_style != new_value:
+			_swap_style_changed_connection(grabber_area_disabled_style, new_value)
 			grabber_area_disabled_style = new_value
-			grabber_area_disabled_style.changed.connect(queue_redraw)
 			queue_redraw()
 	get:
 		if not grabber_area_disabled_style:
@@ -346,7 +352,15 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name.begins_with("center_indicator_") and not draw_center_indicator:
 		property.usage = PROPERTY_USAGE_NO_EDITOR
 
-#region Drawing the RangeSlider 
+## Moves the [signal Resource.changed] -> [method queue_redraw] connection from the previously assigned StyleBox to the newly assigned one, so the control redraws when a StyleBox is edited.
+## Disconnecting the old StyleBox first avoids accumulating connections and the "signal already connected" error when a StyleBox is reused or shared.
+func _swap_style_changed_connection(old_style: StyleBox, new_style: StyleBox) -> void:
+	if is_instance_valid(old_style) and old_style.changed.is_connected(queue_redraw):
+		old_style.changed.disconnect(queue_redraw)
+	if is_instance_valid(new_style) and not new_style.changed.is_connected(queue_redraw):
+		new_style.changed.connect(queue_redraw)
+
+#region Drawing the RangeSlider
 
 ## Handles the drawing of the control.
 func _draw() -> void:
@@ -700,9 +714,33 @@ func _update_hover_state(position: Vector2) -> void:
 		_update_mouse_shape()
 
 ## Changes the cursor shape depending on where it is on the RangeSlider.
-## Virtual function because vertical and horizontal range sliders do not share the same mouse shapes.
+## The resize cursor (used over the handles) is provided by [method _get_resize_cursor_shape], because vertical and horizontal range sliders resize along different axes.
 func _update_mouse_shape():
-	pass # Virtual
+	var cursor_shape := Control.CURSOR_ARROW
+
+	if _current_drag_mode == DragMode.START or _current_drag_mode == DragMode.END:
+		cursor_shape = _get_resize_cursor_shape()
+	elif _current_drag_mode != DragMode.NONE:
+		cursor_shape = Control.CURSOR_MOVE
+	elif _current_hover_state == HoverState.START or _current_hover_state == HoverState.END:
+		cursor_shape = _get_resize_cursor_shape()
+	elif _current_hover_state == HoverState.BAR:
+		cursor_shape = Control.CURSOR_MOVE
+
+	if mouse_default_cursor_shape != cursor_shape:
+		mouse_default_cursor_shape = cursor_shape
+
+## The cursor shape shown when hovering or dragging a handle (the resize direction).
+## Virtual: horizontal sliders resize along X, vertical sliders along Y.
+func _get_resize_cursor_shape() -> CursorShape:
+	return Control.CURSOR_ARROW # Virtual
+
+## Ensures a bar segment along the main axis is at least [constant MIN_BAR_SIZE] long,
+## re-centering it on its midpoint when it is too thin. Returns the adjusted (start, size).
+func _apply_min_bar_size(bar_start: float, bar_size: float) -> Vector2:
+	if bar_size < MIN_BAR_SIZE:
+		return Vector2(bar_start - (MIN_BAR_SIZE - bar_size) / 2.0, MIN_BAR_SIZE)
+	return Vector2(bar_start, bar_size)
 
 ## Calculates the ratio corresponding to a given position on the slider.
 func _get_ratio_for_pos(position: Vector2, should_clamp: bool = true) -> float:
@@ -719,6 +757,9 @@ func _get_value_for_pos(position: Vector2, should_clamp: bool = true) -> float:
 ## Converts a value to its corresponding ratio (0.0 to 1.0).
 ## Applies a logarithmic conversion if [member exp_edit] is true.
 func _get_ratio_from_value(value: float) -> float:
+	# guard against a zero length range, which would make remap divide by zero
+	if is_equal_approx(min_value, max_value):
+		return 0.0
 	if exp_edit and min_value > 0 and max_value > 0:
 		if value <= min_value:
 			return 0.0
@@ -732,6 +773,9 @@ func _get_ratio_from_value(value: float) -> float:
 ## Converts a ratio (0.0 to 1.0) to its corresponding value.
 ## Applies an exponential conversion if `exp_edit` is true.
 func _get_value_from_ratio(ratio: float) -> float:
+	# guard against a zero length range, which would make remap divide by zero.
+	if is_equal_approx(min_value, max_value):
+		return min_value
 	if exp_edit and min_value > 0 and max_value > 0:
 		return exp(remap(ratio, 0.0, 1.0, log(min_value), log(max_value)))
 	else:
@@ -821,14 +865,14 @@ func _get_hover_state_for_pos(position: Vector2) -> HoverState:
 func _get_value_as_string(value: float) -> String:
 	# original code for determining integers in the cpp code
 	# var is_integer_value: bool = fmod(step, 1.0) < 1e-5 and step != 0.0
-	var is_integer_value: bool = roundi(step) == step
+	var is_integer_value: bool = step != 0.0 and is_zero_approx(fmod(step, 1.0))
 	if is_integer_value:
 		return str(int(value))
 	return str(snappedf(value, step))
 
 ## Returns the value range.
 func get_value_range() -> Vector2:
-	return value_range # Should not happen, but return a safe default.
+	return value_range
 
 
 ## Returns the base color of the editor or a default dark color if not found.

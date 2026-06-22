@@ -13,7 +13,7 @@ func _get_minimum_size() -> Vector2:
 	var start_handle_height: float = _get_start_handle_extent()
 	var end_handle_height: float = _get_end_handle_extent()
 	
-	var min_height: float = start_handle_height + end_handle_height + 10.0
+	var min_height: float = start_handle_height + end_handle_height + MIN_SLIDER_LENGTH
 	
 	var start_handle_width: float = 10.0
 	if handle_start_icon:
@@ -98,14 +98,9 @@ func _get_bar_rect() -> Rect2:
 	var bar_end_y: float = maxf(start_y, end_y)
 	
 	var bar_height: float = bar_end_y - bar_start_y
-	
-	var min_bar_height: float = 4.0
-	if bar_height < min_bar_height:
-		var height_difference: float = min_bar_height - bar_height
-		var centered_bar_start_y: float = bar_start_y - height_difference / 2.0
-		return Rect2(0, centered_bar_start_y, size.x, min_bar_height)
 
-	return Rect2(0, bar_start_y, size.x, bar_height)
+	var adjusted: Vector2 = _apply_min_bar_size(bar_start_y, bar_height)
+	return Rect2(0, adjusted.x, size.x, adjusted.y)
 
 func _get_slider_bar_rect() -> Rect2:
 	var start_handle_height: float = _get_start_handle_extent()
@@ -137,17 +132,5 @@ func _get_default_end_icon() -> Texture2D:
 func _get_default_start_icon() -> Texture2D:
 	return RANGE_SLIDER_DOWN
 
-func _update_mouse_shape():
-	var cursor_shape = Control.CURSOR_ARROW
-	
-	if _current_drag_mode == DragMode.START or _current_drag_mode == DragMode.END:
-		cursor_shape = Control.CURSOR_VSIZE
-	elif _current_drag_mode != DragMode.NONE:
-		cursor_shape = Control.CURSOR_MOVE
-	elif _current_hover_state == HoverState.START or _current_hover_state == HoverState.END:
-		cursor_shape = Control.CURSOR_VSIZE
-	elif _current_hover_state == HoverState.BAR:
-		cursor_shape = Control.CURSOR_MOVE
-		
-	if mouse_default_cursor_shape != cursor_shape:
-		mouse_default_cursor_shape = cursor_shape
+func _get_resize_cursor_shape() -> CursorShape:
+	return Control.CURSOR_VSIZE

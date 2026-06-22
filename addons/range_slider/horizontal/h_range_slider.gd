@@ -10,7 +10,7 @@ func _get_minimum_size() -> Vector2:
 	var start_handle_width: float = _get_start_handle_extent()
 	var end_handle_width: float = _get_end_handle_extent()
 	
-	var min_width: float = start_handle_width + end_handle_width + 10.0
+	var min_width: float = start_handle_width + end_handle_width + MIN_SLIDER_LENGTH
 	
 	var start_handle_height: float = 10.0
 	if handle_start_icon:
@@ -95,13 +95,8 @@ func _get_bar_rect() -> Rect2:
 
 	var bar_width: float = bar_end_x - bar_start_x
 
-	var min_bar_width: float = 4.0
-	if bar_width < min_bar_width:
-		var width_difference: float = min_bar_width - bar_width
-		var centered_bar_start_x: float = bar_start_x - width_difference / 2.0
-		return Rect2(centered_bar_start_x, 0, min_bar_width, size.y)
-
-	return Rect2(bar_start_x, 0, bar_width, size.y)
+	var adjusted: Vector2 = _apply_min_bar_size(bar_start_x, bar_width)
+	return Rect2(adjusted.x, 0, adjusted.y, size.y)
 
 func _get_slider_bar_rect() -> Rect2:
 	var start_handle_width: float = _get_start_handle_extent()
@@ -127,17 +122,5 @@ func _draw_center_indicator(ratio: float) -> void:
 	if bar_center_x >= bar_rect.position.x and bar_center_x <= bar_rect.end.x:
 		draw_line(top_center_position, bottom_center_position, _color, 2.0, false)
 
-func _update_mouse_shape():
-	var cursor_shape = Control.CURSOR_ARROW
-	
-	if _current_drag_mode == DragMode.START or _current_drag_mode == DragMode.END:
-		cursor_shape = Control.CURSOR_HSIZE
-	elif _current_drag_mode != DragMode.NONE:
-		cursor_shape = Control.CURSOR_MOVE
-	elif _current_hover_state == HoverState.START or _current_hover_state == HoverState.END:
-		cursor_shape = Control.CURSOR_HSIZE
-	elif _current_hover_state == HoverState.BAR:
-		cursor_shape = Control.CURSOR_MOVE
-		
-	if mouse_default_cursor_shape != cursor_shape:
-		mouse_default_cursor_shape = cursor_shape
+func _get_resize_cursor_shape() -> CursorShape:
+	return Control.CURSOR_HSIZE
