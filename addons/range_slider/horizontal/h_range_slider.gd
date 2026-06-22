@@ -113,7 +113,7 @@ func _draw_center_indicator(ratio: float) -> void:
 	var top_center_position: Vector2 = Vector2(bar_center_x, bar_margin)
 	var bottom_center_position: Vector2 = Vector2(bar_center_x, size.y - bar_margin)
 	
-	var _color = center_indicator_color
+	var _color: Color = center_indicator_color
 
 	if not editable:
 		_color = center_indicator_disabled_color

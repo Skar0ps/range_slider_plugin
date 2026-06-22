@@ -586,15 +586,15 @@ func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 				var new_start_ratio: float = _drag_midpoint_ratio - new_half_width_ratio
 				var new_end_ratio: float = _drag_midpoint_ratio + new_half_width_ratio
 				
-				var start_value: float = _get_value_from_ratio(new_start_ratio)
-				var end_value: float = _get_value_from_ratio(new_end_ratio)
+				var new_start_value: float = _get_value_from_ratio(new_start_ratio)
+				var new_end_value: float = _get_value_from_ratio(new_end_ratio)
 
 				if event.is_command_or_control_pressed():
-					new_range.x = roundf(start_value)
-					new_range.y = roundf(end_value)
+					new_range.x = roundf(new_start_value)
+					new_range.y = roundf(new_end_value)
 				else:
-					new_range.x = snappedf(start_value, step)
-					new_range.y = snappedf(end_value, step)
+					new_range.x = snappedf(new_start_value, step)
+					new_range.y = snappedf(new_end_value, step)
 
 			DragMode.START:
 				var desired_x_ratio: float = current_ratio - _drag_offset_ratio
@@ -631,11 +631,11 @@ func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 				if snapped_x_ratio + range_width_ratio > 1.0:
 					snapped_x_ratio = 1.0 - range_width_ratio
 				
-				var start_value = _get_value_from_ratio(snapped_x_ratio)
-				var end_value = _get_value_from_ratio(snapped_x_ratio + range_width_ratio)
-				
-				new_range.x = snappedf(start_value, step)
-				new_range.y = snappedf(end_value, step)
+				var new_start_value: float = _get_value_from_ratio(snapped_x_ratio)
+				var new_end_value: float = _get_value_from_ratio(snapped_x_ratio + range_width_ratio)
+
+				new_range.x = snappedf(new_start_value, step)
+				new_range.y = snappedf(new_end_value, step)
 		
 
 	else:
@@ -650,15 +650,15 @@ func _handle_mouse_motion(event: InputEventMouseMotion) -> void:
 					value_difference = abs(value_difference)
 				var new_half_width: float = maxf(0, _drag_half_width + value_difference)
 				
-				var start_value: float = _drag_midpoint - new_half_width
-				var end_value: float = _drag_midpoint + new_half_width
+				var new_start_value: float = _drag_midpoint - new_half_width
+				var new_end_value: float = _drag_midpoint + new_half_width
 
 				if event.is_command_or_control_pressed():
-					new_range.x = roundf(start_value)
-					new_range.y = roundf(end_value)
+					new_range.x = roundf(new_start_value)
+					new_range.y = roundf(new_end_value)
 				else:
-					new_range.x = snappedf(start_value, step)
-					new_range.y = snappedf(end_value, step)
+					new_range.x = snappedf(new_start_value, step)
+					new_range.y = snappedf(new_end_value, step)
 
 			DragMode.START:
 				var desired_x_value: float = new_value - _drag_offset

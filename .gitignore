@@ -2,6 +2,9 @@
 .godot/
 .nomedia
 
+# Godot scene editor temporary files
+*.tscn*.tmp
+
 # Godot-specific ignores
 .import/
 export.cfg

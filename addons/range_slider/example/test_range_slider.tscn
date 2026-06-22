@@ -27,20 +27,6 @@ script/source = "extends ColorRect
 @export_custom(PROPERTY_HINT_RANGE, \"0,100,0.1\") var example_range: Vector2 = Vector2(25.0, 75.0)
 "
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4w63l"]
-particle_flag_disable_z = true
-angle_min = -47.39999
-angle_max = 319.00003
-gravity = Vector3(0, 98, 0)
-linear_accel_min = -68.74
-linear_accel_max = 0.74999774
-radial_accel_min = 25.279997
-radial_accel_max = 74.159996
-tangential_accel_min = -50.72
-tangential_accel_max = 38.58
-scale_min = 43.649998
-scale_max = 327.78
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cx5ea"]
 draw_center = false
 border_width_left = 1
@@ -122,7 +108,7 @@ bg_color = Color(0.89411765, 0.15999997, 0.45490196, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_df7pk"]
 bg_color = Color(0.3, 0.3, 0.3, 1)
 
-[node name="Control" type="Control" unique_id=601294413]
+[node name="TestRangeSliders" type="Control" unique_id=601294413]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -140,9 +126,9 @@ open_range = Vector2(0, 3)
 exponential_range = Vector2(0.22, 98.34)
 angle_range = Vector2(0, 0.785397)
 degrees_range = Vector2(147, 360)
-angle_shown_range = Vector2(-1.9000001, 3.0415888)
+angle_shown_range = Vector2(-2.1, 2.8415887)
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=625980218]
+[node name="Background" type="ColorRect" parent="." unique_id=625980218]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -152,10 +138,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = SubResource("GDScript_7l23u")
 example_range = Vector2(19, 58.3)
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=18221924]
-visible = false
-process_material = SubResource("ParticleProcessMaterial_4w63l")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1015621382]
 layout_mode = 1
@@ -173,17 +155,17 @@ theme_override_constants/margin_bottom = 32
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=985541582]
+[node name="VRange" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=985541582]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=719862463]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VRange" unique_id=719862463]
 layout_mode = 2
 text = "Standard Vertical RangeSlider"
 
-[node name="VRangeSlider" type="Range" parent="MarginContainer/VBoxContainer/VBoxContainer" unique_id=2135567097]
+[node name="VRangeSlider" type="Range" parent="MarginContainer/VBoxContainer/VRange" unique_id=2135567097]
 unique_name_in_owner = false
 process_mode = 0
 process_priority = 0
@@ -254,12 +236,13 @@ min_value = 0.0
 max_value = 100.0
 step = 1.0
 page = 0.0
-value = 25.0
+value = 3.0
 exp_edit = false
 rounded = false
 allow_greater = false
 allow_lesser = false
 script = ExtResource("3_7l23u")
+value_range = Vector2(3.04, 99.705)
 handle_pressed_color = Color(0.91764706, 0, 0.36862746, 1)
 handle_disabled_color = Color(0, 0, 0, 1)
 handle_start_icon = ExtResource("4_cx5ea")
@@ -275,19 +258,16 @@ grabber_area_pressed_style = SubResource("StyleBoxFlat_khokt")
 grabber_area_disabled_style = SubResource("StyleBoxFlat_oacj3")
 metadata/_custom_type_script = "uid://b5hd6r47v4w5q"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1167980094]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1626639781]
+[node name="HRange" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1626639781]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=113728047]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HRange" unique_id=113728047]
 layout_mode = 2
 text = "Standard Horizontal RangeSlider"
 horizontal_alignment = 1
 
-[node name="HRangeSlider" type="Range" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1763310170]
+[node name="HRangeSlider" type="Range" parent="MarginContainer/VBoxContainer/HRange" unique_id=1763310170]
 unique_name_in_owner = false
 process_mode = 0
 process_priority = 0

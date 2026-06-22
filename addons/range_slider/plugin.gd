@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-var inspector_plugin = preload("inspector/inspector_plugin.gd").new()
+var inspector_plugin: EditorInspectorPlugin = preload("inspector/inspector_plugin.gd").new()
 
 func _enable_plugin() -> void:
 	add_custom_type("RangeSlider","Range",preload("range_slider.gd"),null)
