@@ -44,7 +44,7 @@ And now you have a handy slider to edit the range !
 - **SpinSlider Control:** Better float editing with [EditorSpinSlider](https://docs.godotengine.org/en/stable/classes/class_editorspinslider.html) for min and max values.
 - **Exponential Mode:** Supports exponential editing (for properties like `scale`).
 - **Angle Range:** Can display properties stored in radians as degrees.
-- **Customizable Appearance:** Uses exported StyleBoxes, icons, and colors for easier theme customization. Defaults to editor icons, colors, and styleboxes.
+- **Customizable Appearance:** Edit the handle colors, icons, StyleBoxes and the center indicator right from the **Visuals** group in the inspector. Leave them empty to fall back to defaults that follow the editor theme.
 
 ## Controls 
 
@@ -73,8 +73,14 @@ And now you have a handy slider to edit the range !
 1.  Copy the `addons/range_slider` folder into your project's `addons` directory.
 2.  Go to `Project > Project Settings > Plugins` and enable the "RangeSlider" plugin.
 
+There are two ways to use the plugin, and they work independently:
+- **In the inspector**, on a `Vector2` property (no scene or node needed).
+- **As a node** (`HRangeSlider` / `VRangeSlider`) in your own scene, for game UI.
+
 ### Inspector Usage
-To use the RangeSlider in the editor inspector, you must export a `Vector2` property. Since the standard `@export_range` annotation does not support `Vector2` types, you'll need to use `@export_custom` to apply the necessary `PROPERTY_HINT_RANGE`.
+The plugin automatically replaces the editor of any exported `Vector2` property that has a range hint. No scene or node needed.
+
+You must export a `Vector2` property. Since the standard `@export_range` annotation does not support `Vector2` types, you'll need to use `@export_custom` to apply the necessary `PROPERTY_HINT_RANGE`.
 
 The plugin will then detect this property and replace the default inspector control with the RangeSlider.
 
@@ -96,12 +102,43 @@ extends Node2D
 
 <img src="docs/example_inspector_usage.png" alt="RangeSliders in the Inspector resulting from the code above" width="640">
 
-### Editor Usage
+### Node Usage
 
-You can also use `RangeSlider` as a Control node like you would ![Horizontal Slider Icon](https://raw.githubusercontent.com/godotengine/godot/refs/heads/master/editor/icons/HSlider.svg)`HSlider` or ![Horizontal Slider Icon](https://raw.githubusercontent.com/godotengine/godot/refs/heads/master/editor/icons/VSlider.svg)`VSlider`.
-When the plugin is enabled, ![Horizontal Range Slider Icon](addons/range_slider/horizontal/HRangeSlider.svg)`HRangeSlider` and ![Vertical Range Slider Icon](addons/range_slider/vertical/VRangeSlider.svg)`VRangeSlider` are automatically added as nodes inheriting from the `RangeSlider` class (which itself inherits from `Range`).
-The handles and styleboxes are exported properties because making the styleboxes and icons part of the theme does not expose them in the inspector when selecting a RangeSlider node, so exported properties are used instead.
+You can also use `RangeSlider` as a Control node in your own scenes, like you would ![Horizontal Slider Icon](https://raw.githubusercontent.com/godotengine/godot/refs/heads/master/editor/icons/HSlider.svg)`HSlider` or ![Horizontal Slider Icon](https://raw.githubusercontent.com/godotengine/godot/refs/heads/master/editor/icons/VSlider.svg)`VSlider`. This is the way to use it for your game UI.
 
+When the plugin is enabled, ![Horizontal Range Slider Icon](addons/range_slider/horizontal/HRangeSlider.svg)`HRangeSlider` and ![Vertical Range Slider Icon](addons/range_slider/vertical/VRangeSlider.svg)`VRangeSlider` are added to the node creation dialog. They inherit from `RangeSlider`, which itself inherits from `Range`.
+
+Add one to your scene, then set `min_value`, `max_value` and `step` (inherited from `Range`) plus the starting `value_range` in the inspector.
+
+You can edit the handles, icons, colors and StyleBoxes in the **Visuals** group of the inspector. Leave a property empty and it uses a default that follows the editor theme.
+
+## Scripting
+
+Reading and writing the range from code works through a node's `value_range` (`x` is the start, `y` is the end) and the `range_changed` signal:
+
+```gdscript
+@onready var slider: HRangeSlider = $HRangeSlider
+
+func _ready() -> void:
+	slider.min_value = 0.0
+	slider.max_value = 100.0
+	slider.step = 1.0
+	# the two following lines are the same as setting value_range to Vector2(20, 80)
+	slider.start_value = 20
+	slider.end_value = 80
+
+	slider.range_changed.connect(_on_range_changed)
+
+func _on_range_changed(new_range: Vector2) -> void:
+	print("start = %s, end = %s" % [new_range.x, new_range.y])
+```
+
+The useful members:
+- `value_range: Vector2` — the range, `x` is the start and `y` is the end. Gets clamped to `[min_value, max_value]`.
+- `start_value` / `end_value` — shortcuts for `value_range.x` / `.y`. Use these to set a single bound: `slider.value_range.x = 10` won't work (it edits a copy), but `slider.start_value = 10` does.
+- `range_changed(new_range: Vector2)` — emitted every time the range changes.
+- `editable` / `scrollable` / `always_show_handles` — behaviour toggles.
+- `min_value` / `max_value` / `step` / `exp_edit` — inherited from `Range`.
 
 ## Hint String Options
 

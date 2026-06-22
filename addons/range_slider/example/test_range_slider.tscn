@@ -41,7 +41,7 @@ tangential_accel_max = 38.58
 scale_min = 43.649998
 scale_max = 327.78
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7l23u"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cx5ea"]
 draw_center = false
 border_width_left = 1
 border_width_top = 1
@@ -49,19 +49,30 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.3, 0.3, 0.3, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6iue"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o01lj"]
 bg_color = Color(0.5, 0.5, 0.5, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cx5ea"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yv2sa"]
 bg_color = Color(0.8, 0.8, 0.8, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oacj3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khokt"]
 bg_color = Color(0.89411765, 0.15999997, 0.45490196, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_auoqo"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oacj3"]
 bg_color = Color(0.3, 0.3, 0.3, 1)
 
-[sub_resource type="DPITexture" id="DPITexture_cx5ea"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o2ckk"]
+bg_color = Color(0.7495402, 0, 0.29328617, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5lgj"]
+bg_color = Color(0.81467706, 0.0011803586, 0.9073557, 1)
+
+[sub_resource type="Theme" id="Theme_cx5ea"]
+HRangeSlider/base_type = &"RangeSlider"
+HRangeSlider/styles/slider = SubResource("StyleBoxFlat_o2ckk")
+RangeSlider/styles/slider = SubResource("StyleBoxFlat_c5lgj")
+
+[sub_resource type="DPITexture" id="DPITexture_df7pk"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"16\"><path fill=\"#fff\" d=\"m10 2-9.99983819 6 9.99983819 6z\"/></svg>
 "
 saturation = 2.0
@@ -81,7 +92,17 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5lgj"]
+[sub_resource type="DPITexture" id="DPITexture_2iruy"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"16\"><path fill=\"#fff\" d=\"m2 2 10 6-10 6z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tiq4b"]
 draw_center = false
 border_width_left = 1
 border_width_top = 1
@@ -89,16 +110,16 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.3, 0.3, 0.3, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o01lj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_auoqo"]
 bg_color = Color(0.5, 0.5, 0.5, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yv2sa"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sq8yy"]
 bg_color = Color(0.8, 0.8, 0.8, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khokt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bowvy"]
 bg_color = Color(0.89411765, 0.15999997, 0.45490196, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tiq4b"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_df7pk"]
 bg_color = Color(0.3, 0.3, 0.3, 1)
 
 [node name="Control" type="Control" unique_id=601294413]
@@ -216,7 +237,7 @@ focus_next = NodePath("")
 focus_previous = NodePath("")
 focus_mode = 2
 focus_behavior_recursive = 0
-mouse_filter = 2
+mouse_filter = 0
 mouse_behavior_recursive = 0
 mouse_force_pass_scroll_events = true
 mouse_default_cursor_shape = 0
@@ -233,27 +254,25 @@ min_value = 0.0
 max_value = 100.0
 step = 1.0
 page = 0.0
-value = 0.0
+value = 25.0
 exp_edit = false
 rounded = false
 allow_greater = false
 allow_lesser = false
 script = ExtResource("3_7l23u")
-editable = false
-always_show_handles = true
 handle_pressed_color = Color(0.91764706, 0, 0.36862746, 1)
-handle_disabled_color = Color(0.74509805, 0.74509805, 0.74509805, 1)
+handle_disabled_color = Color(0, 0, 0, 1)
 handle_start_icon = ExtResource("4_cx5ea")
 handle_start_highlight_icon = ExtResource("4_cx5ea")
 handle_start_disabled_icon = ExtResource("4_cx5ea")
 handle_end_icon = ExtResource("5_c5lgj")
 handle_end_highlight_icon = ExtResource("5_c5lgj")
 handle_end_disabled_icon = ExtResource("5_c5lgj")
-slider_style = SubResource("StyleBoxFlat_7l23u")
-grabber_area_style = SubResource("StyleBoxFlat_y6iue")
-grabber_area_hover_style = SubResource("StyleBoxFlat_cx5ea")
-grabber_area_pressed_style = SubResource("StyleBoxFlat_oacj3")
-grabber_area_disabled_style = SubResource("StyleBoxFlat_auoqo")
+slider_style = SubResource("StyleBoxFlat_cx5ea")
+grabber_area_style = SubResource("StyleBoxFlat_o01lj")
+grabber_area_hover_style = SubResource("StyleBoxFlat_yv2sa")
+grabber_area_pressed_style = SubResource("StyleBoxFlat_khokt")
+grabber_area_disabled_style = SubResource("StyleBoxFlat_oacj3")
 metadata/_custom_type_script = "uid://b5hd6r47v4w5q"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1167980094]
@@ -333,8 +352,8 @@ accessibility_controls_nodes = Array[NodePath]([])
 accessibility_described_by_nodes = Array[NodePath]([])
 accessibility_labeled_by_nodes = Array[NodePath]([])
 accessibility_flow_to_nodes = Array[NodePath]([])
-theme = null
-theme_type_variation = &""
+theme = SubResource("Theme_cx5ea")
+theme_type_variation = &"HRangeSlider"
 min_value = 0.0
 max_value = 100.0
 step = 1.0
@@ -345,17 +364,17 @@ rounded = false
 allow_greater = false
 allow_lesser = false
 script = ExtResource("3_y6iue")
-always_show_handles = true
 handle_pressed_color = Color(0.91764706, 0, 0.36862746, 1)
-handle_start_icon = SubResource("DPITexture_cx5ea")
-handle_start_highlight_icon = SubResource("DPITexture_cx5ea")
-handle_start_disabled_icon = SubResource("DPITexture_cx5ea")
-handle_end_icon = SubResource("DPITexture_c5lgj")
-handle_end_highlight_icon = SubResource("DPITexture_c5lgj")
-handle_end_disabled_icon = SubResource("DPITexture_c5lgj")
-slider_style = SubResource("StyleBoxFlat_c5lgj")
-grabber_area_style = SubResource("StyleBoxFlat_o01lj")
-grabber_area_hover_style = SubResource("StyleBoxFlat_yv2sa")
-grabber_area_pressed_style = SubResource("StyleBoxFlat_khokt")
-grabber_area_disabled_style = SubResource("StyleBoxFlat_tiq4b")
+handle_disabled_color = Color(0, 0, 0, 1)
+handle_start_icon = SubResource("DPITexture_df7pk")
+handle_start_highlight_icon = SubResource("DPITexture_c5lgj")
+handle_start_disabled_icon = SubResource("DPITexture_df7pk")
+handle_end_icon = SubResource("DPITexture_2iruy")
+handle_end_highlight_icon = SubResource("DPITexture_2iruy")
+handle_end_disabled_icon = SubResource("DPITexture_2iruy")
+slider_style = SubResource("StyleBoxFlat_tiq4b")
+grabber_area_style = SubResource("StyleBoxFlat_auoqo")
+grabber_area_hover_style = SubResource("StyleBoxFlat_sq8yy")
+grabber_area_pressed_style = SubResource("StyleBoxFlat_bowvy")
+grabber_area_disabled_style = SubResource("StyleBoxFlat_df7pk")
 metadata/_custom_type_script = "uid://doofp6g5otkxk"

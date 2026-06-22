@@ -53,6 +53,22 @@ enum DragMode {
 			set_value_no_signal(value_range.x)
 			queue_redraw()
 
+## The start (lower) bound of the range. Alias for [member value_range].x.
+## Setting it goes through [member value_range], so it gets clamped and emits [signal range_changed].
+var start_value: float:
+	get:
+		return value_range.x
+	set(new_value):
+		value_range = Vector2(new_value, value_range.y)
+
+## The end (upper) bound of the range. Alias for [member value_range].y.
+## Setting it goes through [member value_range], so it gets clamped and emits [signal range_changed].
+var end_value: float:
+	get:
+		return value_range.y
+	set(new_value):
+		value_range = Vector2(value_range.x, new_value)
+
 ## If [code]true[/code], the slider can be interacted with. If [code]false[/code], the slider is disabled and can only be modified by code.
 @export var editable: bool = true :
 	set(new_value):
