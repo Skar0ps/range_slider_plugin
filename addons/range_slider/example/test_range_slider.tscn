@@ -58,7 +58,7 @@ HRangeSlider/base_type = &"RangeSlider"
 HRangeSlider/styles/slider = SubResource("StyleBoxFlat_o2ckk")
 RangeSlider/styles/slider = SubResource("StyleBoxFlat_c5lgj")
 
-[sub_resource type="DPITexture" id="DPITexture_df7pk"]
+[sub_resource type="DPITexture" id="DPITexture_vob87"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"16\"><path fill=\"#fff\" d=\"m10 2-9.99983819 6 9.99983819 6z\"/></svg>
 "
 saturation = 2.0
@@ -68,17 +68,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[sub_resource type="DPITexture" id="DPITexture_c5lgj"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"16\"><path fill=\"#fff\" d=\"m2 2 10 6-10 6z\"/></svg>
-"
-saturation = 2.0
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
-}
-
-[sub_resource type="DPITexture" id="DPITexture_2iruy"]
+[sub_resource type="DPITexture" id="DPITexture_tiq4b"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"16\"><path fill=\"#fff\" d=\"m2 2 10 6-10 6z\"/></svg>
 "
 saturation = 2.0
@@ -244,7 +234,6 @@ allow_lesser = false
 script = ExtResource("3_7l23u")
 value_range = Vector2(3.04, 99.705)
 handle_pressed_color = Color(0.91764706, 0, 0.36862746, 1)
-handle_disabled_color = Color(0, 0, 0, 1)
 handle_start_icon = ExtResource("4_cx5ea")
 handle_start_highlight_icon = ExtResource("4_cx5ea")
 handle_start_disabled_icon = ExtResource("4_cx5ea")
@@ -345,13 +334,12 @@ allow_greater = false
 allow_lesser = false
 script = ExtResource("3_y6iue")
 handle_pressed_color = Color(0.91764706, 0, 0.36862746, 1)
-handle_disabled_color = Color(0, 0, 0, 1)
-handle_start_icon = SubResource("DPITexture_df7pk")
-handle_start_highlight_icon = SubResource("DPITexture_c5lgj")
-handle_start_disabled_icon = SubResource("DPITexture_df7pk")
-handle_end_icon = SubResource("DPITexture_2iruy")
-handle_end_highlight_icon = SubResource("DPITexture_2iruy")
-handle_end_disabled_icon = SubResource("DPITexture_2iruy")
+handle_start_icon = SubResource("DPITexture_vob87")
+handle_start_highlight_icon = SubResource("DPITexture_vob87")
+handle_start_disabled_icon = SubResource("DPITexture_vob87")
+handle_end_icon = SubResource("DPITexture_tiq4b")
+handle_end_highlight_icon = SubResource("DPITexture_tiq4b")
+handle_end_disabled_icon = SubResource("DPITexture_tiq4b")
 slider_style = SubResource("StyleBoxFlat_tiq4b")
 grabber_area_style = SubResource("StyleBoxFlat_auoqo")
 grabber_area_hover_style = SubResource("StyleBoxFlat_sq8yy")
